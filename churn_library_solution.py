@@ -3,6 +3,10 @@
 
 # import libraries
 import os
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set()
+
 os.environ['QT_QPA_PLATFORM']='offscreen'
 
 
@@ -16,7 +20,21 @@ def import_data(pth):
     output:
             df: pandas dataframe
     '''	
-	pass
+    df = pd.read_csv(pth)
+    return df
+
+def save_figure(fig, figname):
+    '''
+    save figures to images folder
+    input:
+            fig: figure to save
+            figname: figure name 
+
+    output:
+            None
+    '''
+    fig.savefig(figname)
+    plt.close(fig)
 
 
 def perform_eda(df):
@@ -28,8 +46,21 @@ def perform_eda(df):
     output:
             None
     '''
-	pass
+    df['Churn'] = df['Attrition_Flag'].apply(lambda val: 0 if val == "Existing Customer" else 1)
 
+    PLOTS = ["Churn", "Customer_Age", "Marital_Status", 'Total_Trans_Ct', 'corr']
+
+    for plot in PLOTS:
+        fig = plt.figure(figsize=(20,10)) 
+        if plot == "Marital_Status":
+                df[plot].value_counts('normalize').plot(kind='bar')
+        elif plot == 'Total_Trans_Ct':
+                sns.histplot(df[plot], stat='density', kde=True)
+        elif plot == "corr":
+                sns.heatmap(df.corr(), annot=False, cmap='Dark2_r', linewidths = 2)
+        else:
+                 df[plot].hist()        
+        save_figure(fig, "images/eda/"+plot.lower()+".png")
 
 def encoder_helper(df, category_lst, response):
     '''

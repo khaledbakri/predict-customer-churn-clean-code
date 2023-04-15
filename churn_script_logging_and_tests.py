@@ -1,6 +1,6 @@
-import os
 import logging
 import churn_library_solution as cls
+from os.path import exists
 
 logging.basicConfig(
     filename='./logs/churn_library.log',
@@ -22,6 +22,7 @@ def test_import(import_data):
 	try:
 		assert df.shape[0] > 0
 		assert df.shape[1] > 0
+		logging.info("Testing import_data: The shapes of dataframe are greater than zero")
 	except AssertionError as err:
 		logging.error("Testing import_data: The file doesn't appear to have rows and columns")
 		raise err
@@ -31,6 +32,24 @@ def test_eda(perform_eda):
 	'''
 	test perform eda function
 	'''
+	
+	df = cls.import_data("./data/bank_data.csv")
+	perform_eda(df)
+	try:
+		perform_eda(df)
+		logging.info("Testing perform_eda: SUCCESS")
+	except FileNotFoundError as err:
+		logging.error("Testing perform_eda: The file wasn't found")
+		raise err
+
+	try:
+		PLOTS = ["Churn", "Customer_Age", "Marital_Status", 'Total_Trans_Ct', 'corr']
+		for plot in PLOTS:
+			assert exists("images/eda/"+plot.lower()+".png")
+		logging.info("Testing perform_eda: The plots were stored in eda folder correctly")
+	except AssertionError as err:
+		logging.error("Testing perform_eda: One or more plots are missing")
+		raise err
 
 
 def test_encoder_helper(encoder_helper):
@@ -52,7 +71,9 @@ def test_train_models(train_models):
 
 
 if __name__ == "__main__":
-	pass
+	test_import(cls.import_data)
+	test_eda(cls.perform_eda)
+	
 
 
 
