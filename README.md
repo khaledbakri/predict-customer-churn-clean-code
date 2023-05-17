@@ -15,7 +15,7 @@ pip install -r requirements/requirements_py38.txt
 ```
 ## Project Description
 
-This project is the application of the coding best practices to refactor the notebook churn_notebook.ipynb, yielding the module called churn_library_solution.py.
+This project is the application of the coding best practices to refactor the notebook churn_notebook.ipynb, yielding the library called churn_library_solution.py. This solution aims to find customers who are likely to churn and it is implemented using two machine learning algorithms, which are linear regression and random forest.
 
 ## Files and data description
 ### Directory structure
@@ -43,7 +43,12 @@ predict-customer-churn-clean-code/
 
 ## Running Files
 
-To test the module churn_library_solution.py, please run the command below:
+To run the library churn_library_solution.py, please run the command below:
+```bash
+python3 code/churn_library_solution.py
+```
+
+To test the module churn_library_solution.py, please run churn_script_logging_and_tests.py with the command below:
 ```bash
 python3 code/churn_script_logging_and_tests.py 
 ```

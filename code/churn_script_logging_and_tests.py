@@ -21,17 +21,17 @@ def test_import(import_data):
     test data import - this example is completed for you to assist with the other test functions
     '''
     try:
-        dataframe = import_data("./data/bank_data.csv")
+        df = import_data("./data/bank_data.csv")
         logging.info("Testing import_data: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing import_eda: The file wasn't found")
         raise err
 
     try:
-        assert dataframe.shape[0] > 0
-        assert dataframe.shape[1] > 0
+        assert df.shape[0] > 0
+        assert df.shape[1] > 0
         logging.info(
-            "Testing import_data: The shapes of dataframe are greater than zero")
+            "Testing import_data: The shapes of df are greater than zero")
     except AssertionError as err:
         logging.error(
             "Testing import_data: The file doesn't appear to have rows and columns")
@@ -43,10 +43,10 @@ def test_eda(perform_eda):
     test perform eda function
     '''
 
-    dataframe = cls.import_data("./data/bank_data.csv")
-    perform_eda(dataframe)
+    df = cls.import_data("./data/bank_data.csv")
+    perform_eda(df)
     try:
-        perform_eda(dataframe)
+        perform_eda(df)
         logging.info("Testing perform_eda: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing perform_eda: The file wasn't found")
@@ -72,7 +72,7 @@ def test_encoder_helper(encoder_helper):
     '''
     test encoder helper
     '''
-    dataframe = cls.import_data("./data/bank_data.csv")
+    df = cls.import_data("./data/bank_data.csv")
     category_list = [
         "Gender",
         "Education_Level",
@@ -81,7 +81,7 @@ def test_encoder_helper(encoder_helper):
         "Card_Category"]
 
     try:
-        encoder_helper(dataframe, category_list, "Churn")
+        encoder_helper(df, category_list, "Churn")
         logging.info("Testing encoder_helper: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing encoder_helper: The file wasn't found")
@@ -92,14 +92,14 @@ def test_perform_feature_engineering(perform_feature_engineering):
     '''
     test perform_feature_engineering
     '''
-    dataframe = cls.import_data("./data/bank_data.csv")
+    df = cls.import_data("./data/bank_data.csv")
     category_list = [
         "Gender",
         "Education_Level",
         "Marital_Status",
         "Income_Category",
         "Card_Category"]
-    df_encoded = cls.encoder_helper(dataframe, category_list, "Churn")
+    df_encoded = cls.encoder_helper(df, category_list, "Churn")
 
     try:
         perform_feature_engineering(df_encoded, "Churn")
@@ -114,23 +114,23 @@ def test_train_models(train_models):
     '''
     test train_models
     '''
-    dataframe = cls.import_data("./data/bank_data.csv")
+    df = cls.import_data("./data/bank_data.csv")
     category_list = [
         "Gender",
         "Education_Level",
         "Marital_Status",
         "Income_Category",
         "Card_Category"]
-    df_encoded = cls.encoder_helper(dataframe, category_list, "Churn")
-    in_data_train, out_data_train, in_data_test, out_data_test = cls.perform_feature_engineering(
+    df_encoded = cls.encoder_helper(df, category_list, "Churn")
+    X_train, y_train, X_test, y_test = cls.perform_feature_engineering(
         df_encoded, "Churn")
 
     try:
         train_models(
-            in_data_train,
-            out_data_train,
-            in_data_test,
-            out_data_test)
+            X_train,
+            y_train,
+            X_test,
+            y_test)
         logging.info("Testing train_models: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing train_models: The file wasn't found")
