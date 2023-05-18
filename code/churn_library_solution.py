@@ -325,6 +325,7 @@ if __name__ == "__main__":
         "Marital_Status",
         "Income_Category",
         "Card_Category"]
+    perform_eda(df)
     dataframe_encoded = encoder_helper(dataframe, category_list, "Churn")
     X_training, y_training, X_testing, y_testing = perform_feature_engineering(
         dataframe_encoded, "Churn")
